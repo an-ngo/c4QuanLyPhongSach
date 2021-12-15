@@ -20,6 +20,8 @@ public class Room {
 
     private String name;
 
+    private Double price;
+
     @OneToMany
     private List<LocationBook> locationBookList;
 
