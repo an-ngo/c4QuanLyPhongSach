@@ -35,6 +35,8 @@ public class Customer {
 
     private String avatar;
 
+    private Double money;
+
     @OneToMany
     private List<Book> bookList;
 

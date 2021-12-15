@@ -22,7 +22,7 @@ public class Type {
 
     private String name;
 
-    @OneToMany()
+    @OneToMany(targetEntity = Book.class)
     @JsonBackReference
     List<Book> bookList;
 }

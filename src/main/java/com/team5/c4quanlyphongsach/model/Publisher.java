@@ -18,8 +18,7 @@ public class Publisher {
 
     private String name;
 
-    @OneToMany()
+    @OneToMany(targetEntity = Book.class)
     @JsonBackReference
-
     List<Book> bookList;
 }

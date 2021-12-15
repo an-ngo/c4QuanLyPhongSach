@@ -6,9 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import java.util.List;
 
 public class CustomerForm {
     private Long id;
@@ -25,6 +27,12 @@ public class CustomerForm {
 
     private MultipartFile avatar;
 
+    private Double money;
+
+    private List<Book> bookList;
+
+    private List<Room> roomList;
+
     public CustomerForm() {
     }
 
@@ -38,13 +46,40 @@ public class CustomerForm {
         this.avatar = avatar;
     }
 
-    public CustomerForm(String email, String password, String name, Date dateOfBirth, String phoneNumber, MultipartFile avatar) {
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public List<Room> getRoomList() {
+        return roomList;
+    }
+
+    public void setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
+    }
+
+    public CustomerForm(String email, String password, String name, Date dateOfBirth, String phoneNumber, MultipartFile avatar, Double money, List<Book> bookList, List<Room> roomList) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.avatar = avatar;
+        this.money = money;
+        this.bookList = bookList;
+        this.roomList = roomList;
     }
 
     public Long getId() {
