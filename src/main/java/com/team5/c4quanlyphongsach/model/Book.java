@@ -37,5 +37,6 @@ public class Book {
     @ManyToOne(targetEntity = LocationBook.class)
     private LocationBook locationBook;
 
-
+    @ManyToOne
+    private Customer customer;
 }

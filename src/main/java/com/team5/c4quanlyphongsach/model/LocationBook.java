@@ -28,5 +28,6 @@ public class LocationBook {
     @JsonBackReference
     private List<Book> bookList;
 
-
+    @ManyToOne(targetEntity = Room.class)
+    private Room room;
 }
