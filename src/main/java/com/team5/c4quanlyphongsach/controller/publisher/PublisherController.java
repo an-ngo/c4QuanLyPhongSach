@@ -54,13 +54,14 @@ public class PublisherController {
     public ResponseEntity<Publisher> save(@RequestBody Publisher publisher){
         return new ResponseEntity<>(publisherService.save(publisher),HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<Publisher> update(@PathVariable Long id){
-        Optional<Publisher> publisherOptional = publisherService.findById(id);
+    @PutMapping()
+    public ResponseEntity<Publisher> update(@RequestBody Publisher publisher){
+        Optional<Publisher> publisherOptional = publisherService.findById(publisher.getId());
         if (!publisherOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else {
+            publisherService.save(publisher);
             return new ResponseEntity<>(publisherOptional.get(),HttpStatus.OK);
         }
     }

@@ -51,13 +51,14 @@ public class LocationBookController {
     public ResponseEntity<LocationBook> save(@RequestBody LocationBook locationBook){
         return new ResponseEntity<>(locationBookService.save(locationBook),HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<LocationBook> update(@PathVariable Long id){
-        Optional<LocationBook> locationBookOptional = locationBookService.findById(id);
+    @PutMapping
+    public ResponseEntity<LocationBook> update(@RequestBody LocationBook locationBook){
+        Optional<LocationBook> locationBookOptional = locationBookService.findById(locationBook.getId());
         if (!locationBookOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else {
+            locationBookService.save(locationBook);
             return new ResponseEntity<>(locationBookOptional.get(),HttpStatus.OK);
         }
     }
