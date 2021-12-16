@@ -1,5 +1,6 @@
 package com.team5.c4quanlyphongsach.controller.jwt;
 
+import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,8 @@ import com.team5.c4quanlyphongsach.model.security.JwtResponse;
 @CrossOrigin
 public class JwtAuthenticationController {
 
+    @Autowired
+    private ICustomerService customerService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -36,10 +39,10 @@ public class JwtAuthenticationController {
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
-
+        String email = userDetails.getUsername();
         final String token = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        JwtResponse jwtResponse = new JwtResponse(token,email,customerService.findByEmail(email).get().getId());
+        return ResponseEntity.ok(jwtResponse);
     }
 
     private void authenticate(String username, String password) throws Exception {

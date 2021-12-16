@@ -1,10 +1,8 @@
 package com.team5.c4quanlyphongsach.controller.customer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.c4quanlyphongsach.model.Customer;
-import com.team5.c4quanlyphongsach.model.Room;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.publisher.IPublisherService;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,7 +62,7 @@ public class CustomerController {
             return new ResponseEntity<>(customers,HttpStatus.OK);
         }
     }
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
         Optional<Customer> customer2 = customerService.findByEmail(customer.getEmail());
         if(!customer2.isPresent()) {
