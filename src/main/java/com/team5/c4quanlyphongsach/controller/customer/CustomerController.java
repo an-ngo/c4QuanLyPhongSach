@@ -1,21 +1,33 @@
 package com.team5.c4quanlyphongsach.controller.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.c4quanlyphongsach.model.Customer;
+import com.team5.c4quanlyphongsach.model.Room;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.publisher.IPublisherService;
 import com.team5.c4quanlyphongsach.service.room.IRoomService;
 import com.team5.c4quanlyphongsach.service.type.ITypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
 import org.springframework.web.servlet.ModelAndView;
+=======
+import org.springframework.web.multipart.MultipartFile;
+>>>>>>> fa8b758e5abb5f93ef8c5f6f305e5e47b82c1649
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +58,9 @@ public class CustomerController {
     @Autowired
     private ITypeService typeService;
 
+    @Autowired
+    Environment env;
+
     @GetMapping
     public ResponseEntity<List<Customer>> showAll(){
         List<Customer> customers = (List<Customer>) customerService.findAll();
@@ -57,11 +72,20 @@ public class CustomerController {
         }
     }
     @PostMapping
-    public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer, BindingResult bindingResult){
-        Customer newCustomer = customerService.save(customer);
-        httpSession.setAttribute("customer",newCustomer);
-        return new ResponseEntity<>(newCustomer,HttpStatus.CREATED);
+    public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
+        customerService.save(customer);
+        return new ResponseEntity<>(customer,HttpStatus.CREATED);
+    }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> findCustomerById(@PathVariable Long id) {
+        Optional<Customer> customerOptional = customerService.findById(id);
+        if (!customerOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(customerOptional.get(), HttpStatus.OK);
+        }
     }
 
     @PutMapping("/updateMoney")
@@ -70,17 +94,34 @@ public class CustomerController {
         customerService.updateBalance(amount+customer.getMoney(),customer.getId());
         return new ResponseEntity<>(HttpStatus.OK);
         }
-    @PutMapping
-    public ResponseEntity<Customer> update(@Valid @RequestBody Customer customer, BindingResult bindingResult){
-        Optional<Customer> customerOptional = customerService.findById(customer.getId());
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Customer> update(@PathVariable Long id,@RequestPart("file")MultipartFile file,@RequestPart ("newCustomer") String customer){
+        Optional<Customer> customerOptional = customerService.findById(id);
         if (!customerOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-            Customer updateCustomer = customerService.save(customer);
-            httpSession.setAttribute("customer",updateCustomer);
-            return new ResponseEntity<>(updateCustomer,HttpStatus.OK);
+            MultipartFile multipartFile = file;
+            String file1 = multipartFile.getOriginalFilename();
+            try {
+                Customer customer1 = new ObjectMapper().readValue(customer,Customer.class);
+                customer1.setId(customerOptional.get().getId());
+                customer1.setAvatar(file1);
+                customerService.save(customer1);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            String fileUpLoad = env.getProperty("upload.path");
+            try {
+                FileCopyUtils.copy(multipartFile.getBytes(),new File(fileUpLoad + file1));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Customer> remove(@PathVariable Long id){
         Optional<Customer> customerOptional = customerService.findById(id);
@@ -89,7 +130,7 @@ public class CustomerController {
         }
         else {
             customerService.remove(id);
-            return new ResponseEntity<>(customerOptional.get(),HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 }
