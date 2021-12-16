@@ -18,11 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
-import org.springframework.web.servlet.ModelAndView;
-=======
 import org.springframework.web.multipart.MultipartFile;
->>>>>>> fa8b758e5abb5f93ef8c5f6f305e5e47b82c1649
+
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;

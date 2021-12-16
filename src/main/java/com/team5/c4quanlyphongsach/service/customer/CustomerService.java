@@ -37,6 +37,7 @@ public class CustomerService implements ICustomerService {
     public void remove(Long id) {
         customerRepository.deleteById(id);
     }
+
     public void updateBalance(Double balance, Long id) {
         customerRepository.updateBalance(balance,id);
     }
