@@ -46,6 +46,25 @@ public class Users {
         this.password = password;
     }
 
+    public Users(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
+    public Users(String name, String password, Roles roles) {
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public Roles getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Roles roles) {
+        this.roles = roles;
+    }
+
     public Long getId() {
         return id;
     }
