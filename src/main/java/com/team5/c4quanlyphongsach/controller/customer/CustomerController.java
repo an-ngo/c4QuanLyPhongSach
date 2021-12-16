@@ -68,23 +68,9 @@ public class CustomerController {
         }
     }
     @PostMapping
-    public ResponseEntity<Customer> save(@Valid @RequestPart("file")MultipartFile file,@RequestPart ("newCustomer") String customer){
-        MultipartFile multipartFile = file;
-        String file1 = multipartFile.getOriginalFilename();
-        try {
-            Customer customer1 = new ObjectMapper().readValue(customer,Customer.class);
-            customer1.setAvatar(file1);
-            customerService.save(customer1);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        String fileUpLoad = env.getProperty("upload.path");
-        try {
-            FileCopyUtils.copy(multipartFile.getBytes(),new File(fileUpLoad + file1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
+        customerService.save(customer);
+        return new ResponseEntity<>(customer,HttpStatus.CREATED);
     }
 
 
