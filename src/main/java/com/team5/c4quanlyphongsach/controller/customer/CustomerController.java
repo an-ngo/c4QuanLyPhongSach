@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.Room;
+import com.team5.c4quanlyphongsach.model.users.Roles;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.publisher.IPublisherService;
@@ -72,6 +73,7 @@ public class CustomerController {
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
         Optional<Customer> customer2 = customerService.findByEmail(customer.getEmail());
         if(!customer2.isPresent()) {
+            customer.setRoles(new Roles(Long.parseLong("1")));
             customerService.save(customer);
             return new ResponseEntity<>(customer, HttpStatus.CREATED);
         }
