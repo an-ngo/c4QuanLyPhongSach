@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -31,7 +31,7 @@ public class Customer {
     private String name;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "vi_VN", timezone = "Asia/Ho_Chi_Minh")
-    private Date dateOfBirth;
+    private java.sql.Date dateOfBirth;
 
     private String phoneNumber;
 
@@ -44,4 +44,13 @@ public class Customer {
 
     @OneToMany
     private List<Room> roomList;
+
+    public Customer(String email, String password, String name, Date dateOfBirth, String phoneNumber, Double money) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.money = money;
+    }
 }
