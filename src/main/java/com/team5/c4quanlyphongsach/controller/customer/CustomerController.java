@@ -18,18 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
-=======
-<<<<<<< HEAD
-import org.springframework.web.multipart.MultipartFile;
-
-=======
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.multipart.MultipartFile;
->>>>>>> 42357c43f4c9aece782e0d06d4906db540f77bc4
->>>>>>> 657c88b3ac72559ab0c6a035b4b321e68c211923
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -78,7 +68,7 @@ public class CustomerController {
             return new ResponseEntity<>(customers,HttpStatus.OK);
         }
     }
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
         Optional<Customer> customer2 = customerService.findByEmail(customer.getEmail());
         if(!customer2.isPresent()) {
