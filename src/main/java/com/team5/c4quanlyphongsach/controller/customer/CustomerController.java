@@ -69,8 +69,12 @@ public class CustomerController {
     }
     @PostMapping
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
-        customerService.save(customer);
-        return new ResponseEntity<>(customer,HttpStatus.CREATED);
+        Optional<Customer> customer2 = customerService.findByEmail(customer.getEmail());
+        if(!customer2.isPresent()) {
+            customerService.save(customer);
+            return new ResponseEntity<>(customer, HttpStatus.CREATED);
+        }
+        else return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
     }
 
 

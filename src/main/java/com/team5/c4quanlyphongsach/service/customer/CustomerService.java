@@ -43,6 +43,11 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    public Optional<Customer> findByEmail(String email){
+        return customerRepository.findCustomerByEmail(email);
+    }
+
+    @Override
     public void updateBalance(Double balance, Customer customer) {
         entityManager = sessionFactory.createEntityManager();
         String criteriaQuery = "UPDATE Customer set money = :money WHERE id = :customer_id";
