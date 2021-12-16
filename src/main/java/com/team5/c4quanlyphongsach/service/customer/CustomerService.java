@@ -45,7 +45,6 @@ public class CustomerService implements ICustomerService {
     }
 
         @Override
-
     public void updateBalance(Double balance, Long id) {
         customerRepository.updateBalance(balance,id);
     }
