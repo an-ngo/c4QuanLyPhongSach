@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class Customer {
     @Column(unique = true)
     private String email;
 
-    @Pattern(regexp = "^[0-9a-zA-z]{8}$")
+    @Pattern(regexp = "^[0-9a-zA-z]{8}$", message = "Mat khau khong hop le")
+//    @Size(max = 18, min = 8,message = "Do dai mat khau khong hop le")
     private String password;
 
     private String name;

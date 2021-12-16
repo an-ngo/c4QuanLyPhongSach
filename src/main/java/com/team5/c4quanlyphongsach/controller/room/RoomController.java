@@ -1,6 +1,7 @@
 package com.team5.c4quanlyphongsach.controller.room;
 
 
+import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.Room;
 import com.team5.c4quanlyphongsach.service.room.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +22,30 @@ public class RoomController {
     @Autowired
     private IRoomService roomService;
 
+    @Autowired
+    private HttpSession httpSession;
+
+
     @GetMapping
+    public ModelAndView showALl(){
+        Customer customer = (Customer) httpSession.getAttribute("customer");
+
+        return new ModelAndView("/homePage").addObject("customer",customer);
+    }
+
+    @GetMapping("/customer")
+    public ResponseEntity<List<Room>> findAllByCustomer(){
+        Customer customer = (Customer) httpSession.getAttribute("customer");
+        List<Room>rooms = roomService.findAllByCustomer(customer);
+        if (rooms.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        else {
+            return new ResponseEntity<>(rooms,HttpStatus.OK);
+        }
+        }
+
+    @GetMapping("/all")
     public ResponseEntity<Iterable<Room>> findAllRoom() {
         List<Room> rooms = (List<Room>) roomService.findAll();
         if (rooms.isEmpty()) {

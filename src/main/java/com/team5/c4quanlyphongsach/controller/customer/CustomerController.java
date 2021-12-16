@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.ResultSet;
 import java.util.List;
@@ -21,6 +23,10 @@ import java.util.Optional;
 @RequestMapping("/customers")
 @CrossOrigin("*")
 public class CustomerController {
+
+    @Autowired
+    private HttpSession httpSession;
+
     @Autowired
     private IPublisherService publisherService;
 
@@ -50,17 +56,28 @@ public class CustomerController {
         }
     }
     @PostMapping
-    public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
-        return new ResponseEntity<>(customerService.save(customer),HttpStatus.CREATED);
+    public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer, BindingResult bindingResult){
+        Customer newCustomer = customerService.save(customer);
+        httpSession.setAttribute("customer",newCustomer);
+        return new ResponseEntity<>(newCustomer,HttpStatus.CREATED);
+
     }
+
+    @PutMapping("/updateMoney")
+    public ResponseEntity<Customer> updateMoney(@RequestParam Double amount){
+        Customer customer = (Customer) httpSession.getAttribute("customer");
+        customerService.updateBalance(amount,customer);
+        return new ResponseEntity<>(HttpStatus.OK);
+        }
     @PutMapping
-    public ResponseEntity<Customer> update(@RequestBody Customer customer){
+    public ResponseEntity<Customer> update(@Valid @RequestBody Customer customer, BindingResult bindingResult){
         Optional<Customer> customerOptional = customerService.findById(customer.getId());
         if (!customerOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-            customerService.save(customer);
-            return new ResponseEntity<>(customerOptional.get(),HttpStatus.OK);
+            Customer updateCustomer = customerService.save(customer);
+            httpSession.setAttribute("customer",updateCustomer);
+            return new ResponseEntity<>(updateCustomer,HttpStatus.OK);
         }
     }
     @DeleteMapping("/{id}")

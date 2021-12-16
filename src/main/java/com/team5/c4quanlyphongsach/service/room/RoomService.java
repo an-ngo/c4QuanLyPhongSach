@@ -1,10 +1,12 @@
 package com.team5.c4quanlyphongsach.service.room;
 
+import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.Room;
 import com.team5.c4quanlyphongsach.repository.room.IRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,5 +32,10 @@ public class RoomService implements IRoomService{
     @Override
     public void remove(Long id) {
         roomRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Room> findAllByCustomer(Customer customer) {
+        return roomRepository.findAllByCustomer(customer);
     }
 }

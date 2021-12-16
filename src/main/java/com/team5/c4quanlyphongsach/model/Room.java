@@ -22,6 +22,8 @@ public class Room {
 
     private Double price;
 
+    private String image;
+
     @OneToMany
     private List<LocationBook> locationBookList;
 

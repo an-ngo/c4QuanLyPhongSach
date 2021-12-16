@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        successHandle()
+        function successHandle(){
+            $.ajax({
+                type:"GET",
+                url:"/rooms/customer",
+                success:function (data){
+                    let content = '<tr>\n' +
+                        '        <th>Image</th>\n' +
+                        '        <th>Name</th>\n' +
+                        '        <th>Buy</th>\n' +
+                        '    </tr>\n';
+                    for (let i = 0; i < data.length; i++) {
+                        content +=  '    <tr>\n' +
+                            '       <td><img src="'+data[i].image+'" alt=""></td>\n' +
+                            '       <td>'+data[i].name+'</td>\n' +
+                            '       <td><button value="'+data[i].id+'" onclick="comeIn(this)">Come In</button></td>\n' +
+                            '    </tr>';
+                    }
+                    document.getElementById("roomList").innerHTML = content;
+
+                }
+            });
+        }
+        function insertMoney(){
+            let amount = $("#moneyAmount").val();
+            $.ajax({
+                type: "PUT",
+                url: "/customers/updateMoney?amount="+amount,
+                success:successHandle
+            });
+        }
+        function addNewBook(){
+
+        }
+        function showAllBook(){
+
+        }
+
+    </script>
+</head>
+<body>
+<!--<h1>WELCOME </h1>-->
+<h3 th:text="'WELCOME'+${customer.name}"></h3>
+<h2 th:text="'Balance'+${customer.money}"></h2>
+
+<h3><button onclick="addNewBook()">New Book</button></h3>
+<input id="moneyAmount" type="text" placeholder="">
+<h3><button onclick="insertMoney()">ATM</button></h3>
+<h3><button onclick="showAllBook()">Bag</button></h3>
+
+
+<table border="1" id="roomList">
+<!--    <tr>-->
+<!--        <th>Image</th>-->
+<!--        <th>Name</th>-->
+<!--        <th>Buy</th>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--       <td></td>-->
+<!--       <td></td>-->
+<!--       <td><button onclick="comeIn()"></button></td>-->
+<!--    </tr>-->
+</table>
+</body>
+</html>
