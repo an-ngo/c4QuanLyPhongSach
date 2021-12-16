@@ -38,15 +38,12 @@ public class CustomerService implements ICustomerService {
         customerRepository.deleteById(id);
     }
 
-<<<<<<< HEAD
-=======
+
     @Override
     public Optional<Customer> findByEmail(String email){
         return customerRepository.findCustomerByEmail(email);
     }
-
-        @Override
->>>>>>> 42357c43f4c9aece782e0d06d4906db540f77bc4
+    @Override
     public void updateBalance(Double balance, Long id) {
         customerRepository.updateBalance(balance,id);
     }

@@ -33,7 +33,6 @@ public class RoomController {
 // List LocationBook theo RoomID
     @GetMapping("/{id}")
     public ResponseEntity<List<LocationBook>> listLocationBookByRoom(@PathVariable Long id) {
-
         Optional<Room> roomOptional = roomService.findById(id);
         if (!roomOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
