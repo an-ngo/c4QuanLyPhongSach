@@ -15,9 +15,6 @@ import java.util.Optional;
 @Service
 public class CustomerService implements ICustomerService {
 
-    private static SessionFactory sessionFactory;
-    private static EntityManager entityManager;
-
     @Autowired
     private ICustomerRepository customerRepository;
 
@@ -39,18 +36,8 @@ public class CustomerService implements ICustomerService {
     @Override
     public void remove(Long id) {
         customerRepository.deleteById(id);
-
     }
-
-    @Override
-    public void updateBalance(Double balance, Customer customer) {
-        entityManager = sessionFactory.createEntityManager();
-        String criteriaQuery = "UPDATE Customer set money = :money WHERE id = :customer_id";
-        Query query =  entityManager.createQuery(criteriaQuery,Customer.class);
-        query.setParameter("money",customer.getMoney()+balance);
-        query.setParameter("customer_id",customer.getId());
-        query.executeUpdate();
+    public void updateBalance(Double balance, Long id) {
+        customerRepository.updateBalance(balance,id);
     }
-
-
 }
