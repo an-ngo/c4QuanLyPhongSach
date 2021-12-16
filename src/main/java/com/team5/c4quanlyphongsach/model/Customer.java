@@ -13,8 +13,9 @@ import java.util.List;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,5 +53,11 @@ public class Customer {
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.money = money;
+    }
+
+    public Customer(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
     }
 }

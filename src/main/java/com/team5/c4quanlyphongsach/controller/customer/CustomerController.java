@@ -18,7 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
+import org.springframework.web.servlet.ModelAndView;
+=======
 import org.springframework.web.multipart.MultipartFile;
+>>>>>>> fa8b758e5abb5f93ef8c5f6f305e5e47b82c1649
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -68,23 +72,9 @@ public class CustomerController {
         }
     }
     @PostMapping
-    public ResponseEntity<Customer> save(@Valid @RequestPart("file")MultipartFile file,@RequestPart ("newCustomer") String customer){
-        MultipartFile multipartFile = file;
-        String file1 = multipartFile.getOriginalFilename();
-        try {
-            Customer customer1 = new ObjectMapper().readValue(customer,Customer.class);
-            customer1.setAvatar(file1);
-            customerService.save(customer1);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        String fileUpLoad = env.getProperty("upload.path");
-        try {
-            FileCopyUtils.copy(multipartFile.getBytes(),new File(fileUpLoad + file1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
+        customerService.save(customer);
+        return new ResponseEntity<>(customer,HttpStatus.CREATED);
     }
 
 
@@ -101,7 +91,7 @@ public class CustomerController {
     @PutMapping("/updateMoney")
     public ResponseEntity<Customer> updateMoney(@RequestParam Double amount){
         Customer customer = (Customer) httpSession.getAttribute("customer");
-        customerService.updateBalance(amount,customer);
+        customerService.updateBalance(amount+customer.getMoney(),customer.getId());
         return new ResponseEntity<>(HttpStatus.OK);
         }
 

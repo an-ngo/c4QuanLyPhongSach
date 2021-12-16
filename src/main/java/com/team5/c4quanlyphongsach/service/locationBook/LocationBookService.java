@@ -5,6 +5,7 @@ import com.team5.c4quanlyphongsach.repository.locationBook.ILocationBookReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,10 @@ public class LocationBookService implements ILocationBookService {
     @Override
     public void remove(Long id) {
         locationBookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<LocationBook> findAllByRoom_Id(Long id) {
+        return locationBookRepository.findAllByRoom_Id(id);
     }
 }

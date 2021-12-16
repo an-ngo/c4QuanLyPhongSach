@@ -2,7 +2,9 @@ package com.team5.c4quanlyphongsach.controller.room;
 
 
 import com.team5.c4quanlyphongsach.model.Customer;
+import com.team5.c4quanlyphongsach.model.LocationBook;
 import com.team5.c4quanlyphongsach.model.Room;
+import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.room.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,27 +25,35 @@ public class RoomController {
     private IRoomService roomService;
 
     @Autowired
+    private ILocationBookService locationBookService;
+
+
+    @Autowired
     private HttpSession httpSession;
+// List LocationBook theo RoomID
+    @GetMapping("/{id}")
+    public ResponseEntity<List<LocationBook>> listLocationBookByRoom(@PathVariable Long id) {
 
-
-    @GetMapping
-    public ModelAndView showALl(){
-        Customer customer = (Customer) httpSession.getAttribute("customer");
-
-        return new ModelAndView("/homePage").addObject("customer",customer);
+        Optional<Room> roomOptional = roomService.findById(id);
+        if (!roomOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            List<LocationBook> locationBooks = locationBookService.findAllByRoom_Id(id);
+            return new ResponseEntity<>(locationBooks, HttpStatus.OK);
+        }
     }
 
+    //list phong theo customer
     @GetMapping("/customer")
-    public ResponseEntity<List<Room>> findAllByCustomer(){
+    public ResponseEntity<List<Room>> findAllByCustomer() {
         Customer customer = (Customer) httpSession.getAttribute("customer");
-        List<Room>rooms = roomService.findAllByCustomer(customer);
-        if (rooms.isEmpty()){
+        List<Room> rooms = roomService.findAllByCustomer(customer);
+        if (rooms.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(rooms, HttpStatus.OK);
         }
-        else {
-            return new ResponseEntity<>(rooms,HttpStatus.OK);
-        }
-        }
+    }
 
     @GetMapping("/all")
     public ResponseEntity<Iterable<Room>> findAllRoom() {
@@ -54,16 +64,16 @@ public class RoomController {
             return new ResponseEntity<>(rooms, HttpStatus.OK);
         }
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Room> findRoomById(@PathVariable Long id) {
-        Optional<Room> roomOptional = roomService.findById(id);
-        if (!roomOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(roomOptional.get(), HttpStatus.OK);
-        }
-    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Room> findRoomById(@PathVariable Long id) {
+//        Optional<Room> roomOptional = roomService.findById(id);
+//        if (!roomOptional.isPresent()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(roomOptional.get(), HttpStatus.OK);
+//        }
+//    }
 
     @PostMapping
     public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
