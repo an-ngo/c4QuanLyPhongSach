@@ -10,10 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ICustomerRepository extends JpaRepository<Customer,Long> {
-<<<<<<< HEAD
     Optional<Customer> findCustomerByEmail(String email);
-=======
     @Query("UPDATE Customer set money = :money WHERE id = :customer_id")
     void updateBalance(@Param("money") Double balance, @Param("customer_id")Long id);
->>>>>>> 698eea05efaca642e706b47b1c8fb0fdf0d250f5
 }
