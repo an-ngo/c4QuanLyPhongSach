@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -91,7 +92,7 @@ public class CustomerController {
     @PutMapping("/updateMoney")
     public ResponseEntity<Customer> updateMoney(@RequestParam Double amount){
         Customer customer = (Customer) httpSession.getAttribute("customer");
-        customerService.updateBalance(amount,customer);
+        customerService.updateBalance(amount+customer.getMoney(),customer.getId());
         return new ResponseEntity<>(HttpStatus.OK);
         }
 

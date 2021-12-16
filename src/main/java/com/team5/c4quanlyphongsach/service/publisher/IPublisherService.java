@@ -4,4 +4,5 @@ import com.team5.c4quanlyphongsach.model.Publisher;
 import com.team5.c4quanlyphongsach.service.IGeneralService;
 
 public interface IPublisherService extends IGeneralService<Publisher> {
+
 }

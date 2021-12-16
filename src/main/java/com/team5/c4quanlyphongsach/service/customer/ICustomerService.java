@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface ICustomerService extends IGeneralService<Customer> {
 
-    void updateBalance(Double balance,Customer customer);
+
     Optional<Customer> findByEmail(String email);
+    void updateBalance(Double amount, Long id);
 }
