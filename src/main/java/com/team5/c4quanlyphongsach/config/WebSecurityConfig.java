@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
+                .cors().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .antMatchers("/customers/signup").permitAll()
@@ -67,10 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-//@Override
-//protected void configure(HttpSecurity httpSecurity) throws Exception {
-//    httpSecurity.csrf().disable()
-//            .authorizeRequests().anyRequest().permitAll();
+
+
+//        @Override
+//        protected void configure(HttpSecurity httpSecurity) throws Exception {
+//            httpSecurity.csrf().disable()
+//                    .authorizeRequests().anyRequest().permitAll();
 //
-//}
+//        }
+
+
 }
