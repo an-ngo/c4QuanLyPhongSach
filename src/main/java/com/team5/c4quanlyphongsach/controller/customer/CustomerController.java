@@ -105,6 +105,7 @@ public class CustomerController {
                 Customer customer1 = new ObjectMapper().readValue(customer,Customer.class);
                 customer1.setId(customerOptional.get().getId());
                 customer1.setAvatar(file1);
+                customer1.setRoles(new Roles(Long.parseLong("1")));
                 customerService.save(customer1);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
