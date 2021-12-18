@@ -4,6 +4,7 @@ package com.team5.c4quanlyphongsach.controller.room;
 import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.LocationBook;
 import com.team5.c4quanlyphongsach.model.Room;
+import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.room.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +29,8 @@ public class RoomController {
     @Autowired
     private ILocationBookService locationBookService;
 
+    @Autowired
+    private ICustomerService customerService;
 
     @Autowired
     private HttpSession httpSession;
@@ -74,9 +78,27 @@ public class RoomController {
 //        }
 //    }
 
-    @PostMapping
-    public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
-        return new ResponseEntity<>(roomService.save(room), HttpStatus.CREATED);
+    @PostMapping("/{id}")
+    public ResponseEntity<Room> saveRoom(@PathVariable Long id, @RequestBody Room room) {
+        Optional<Customer> customerOptional = customerService.findById(id);
+        List<Room> rooms = (List<Room>) roomService.findAllByCustomerId(id);
+        boolean check = true;
+        if(customerOptional.get().getMoney() >= room.getPrice()){
+            for (Room value : rooms) {
+                if (Objects.equals(value.getCustomer().getId(), id) && Objects.equals(value.getName(), room.getName())) {
+                    check = false;
+                    break;
+                }
+            }
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(check) {
+           customerOptional.get().setMoney(customerOptional.get().getMoney() - room.getPrice());
+           customerService.save(customerOptional.get());
+            roomService.save(room);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -105,4 +127,5 @@ public class RoomController {
         List<Room> rooms = (List<Room>) roomService.findAllByCustomerId(id);
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
+
 }
