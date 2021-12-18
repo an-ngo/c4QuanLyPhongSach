@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -124,6 +125,19 @@ public class CustomerController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+
+    @PutMapping("/recharge/{id}/{recharge}")
+    public ResponseEntity<Customer>recharge(@PathVariable long id, @PathVariable String recharge){
+        Optional<Customer> customerOptional = customerService.findById(id);
+        if (!customerOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            customerOptional.get().setMoney(Double.parseDouble(recharge));
+            customerService.save(customerOptional.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

@@ -27,6 +27,8 @@ public class Book {
 
     private Boolean status;
 
+    private String image;
+
     @ManyToOne(targetEntity = Publisher.class)
     private Publisher publisher;
 

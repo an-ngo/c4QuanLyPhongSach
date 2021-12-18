@@ -55,12 +55,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
-                .cors().disable()
+                .cors()
+                .and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .antMatchers("/customers/signup").permitAll()
+//                .antMatchers("/customers/**").permitAll()
                 // all other requests need to be authenticated
-                .anyRequest().authenticated().and().
+//                .anyRequest().authenticated().and().
+                .anyRequest().permitAll().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

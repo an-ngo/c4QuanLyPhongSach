@@ -1,17 +1,25 @@
 package com.team5.c4quanlyphongsach.controller.book;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.c4quanlyphongsach.model.Book;
 import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.LocationBook;
+import com.team5.c4quanlyphongsach.model.users.Roles;
 import com.team5.c4quanlyphongsach.service.book.IBookService;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +35,10 @@ public class BookController {
 
     @Autowired
     private ILocationBookService locationBookService;
+
+    @Autowired
+    Environment env;
+
 
 
     @GetMapping
@@ -72,8 +84,24 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> saveRoom(@RequestBody Book book) {
-        return new ResponseEntity<>(bookService.save(book), HttpStatus.CREATED);
+    public ResponseEntity<Book> saveRoom(@RequestPart("file") MultipartFile file,@RequestPart ("newBook") String book) {
+            MultipartFile multipartFile = file;
+            String file1 = multipartFile.getOriginalFilename();
+            try {
+                Book book1 = new ObjectMapper().readValue(book,Book.class);
+                book1.setImage(file1);
+                bookService.save(book1);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            String fileUpLoad = env.getProperty("upload.path");
+            try {
+                FileCopyUtils.copy(multipartFile.getBytes(),new File(fileUpLoad + file1));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @PutMapping("/{id}")
