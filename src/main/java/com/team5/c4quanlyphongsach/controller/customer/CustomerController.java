@@ -17,7 +17,9 @@ import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
@@ -128,9 +130,14 @@ public class CustomerController {
         if (!customerOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-            Double newMoney = customerOptional.get().getMoney() + Double.parseDouble(recharge);
-            customerOptional.get().setMoney(newMoney);
-            customerService.save(customerOptional.get());
+            if(customerOptional.get().getMoney() == null){
+                customerOptional.get().setMoney(Double.parseDouble(recharge));
+                customerService.save(customerOptional.get());
+            }else {
+                Double newMoney = customerOptional.get().getMoney() + Double.parseDouble(recharge);
+                customerOptional.get().setMoney(newMoney);
+                customerService.save(customerOptional.get());
+            }
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

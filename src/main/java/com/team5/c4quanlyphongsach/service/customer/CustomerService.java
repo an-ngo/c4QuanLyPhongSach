@@ -38,12 +38,12 @@ public class CustomerService implements ICustomerService {
         customerRepository.deleteById(id);
     }
 
+
     @Override
     public Optional<Customer> findByEmail(String email){
         return customerRepository.findCustomerByEmail(email);
     }
-
-        @Override
+      @Override
     public void updateBalance(Double balance, Long id) {
         customerRepository.updateBalance(balance,id);
     }

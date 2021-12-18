@@ -13,4 +13,5 @@ import java.util.List;
 public interface IRoomRepository extends JpaRepository<Room,Long> {
     List<Room> findAllByCustomer(Customer customer);
 
+    Iterable<Room> findAllByCustomerId(Long id);
 }
