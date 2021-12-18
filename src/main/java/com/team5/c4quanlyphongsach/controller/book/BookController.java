@@ -1,8 +1,11 @@
 package com.team5.c4quanlyphongsach.controller.book;
 
 import com.team5.c4quanlyphongsach.model.Book;
-import com.team5.c4quanlyphongsach.model.Room;
+import com.team5.c4quanlyphongsach.model.Customer;
+import com.team5.c4quanlyphongsach.model.LocationBook;
 import com.team5.c4quanlyphongsach.service.book.IBookService;
+import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
+import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +17,16 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
+@CrossOrigin("*")
 public class BookController {
     @Autowired
     private IBookService bookService;
+
+    @Autowired
+    private ICustomerService customerService;
+
+    @Autowired
+    private ILocationBookService locationBookService;
 
 
     @GetMapping
@@ -36,6 +46,28 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(bookOptional.get(), HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<Book>> findAllBookByCustomerId(@PathVariable Long id) {
+        Optional<Customer> customer = customerService.findById(id);
+        if (!customer.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<Book> books = bookService.findAllByCustomer_Id(id);
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/locationBook/{id}")
+    public ResponseEntity<List<Book>> findAllBookByLocationBookId(@PathVariable Long id) {
+        Optional<LocationBook> locationBook = locationBookService.findById(id);
+        if (!locationBook.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            List<Book> books = bookService.findAllByLocationBook_Id(id);
+            return new ResponseEntity<>(books, HttpStatus.OK);
         }
     }
 
