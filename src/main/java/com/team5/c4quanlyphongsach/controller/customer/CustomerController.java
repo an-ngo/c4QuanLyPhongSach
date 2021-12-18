@@ -136,8 +136,14 @@ public class CustomerController {
         if (!customerOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-            customerOptional.get().setMoney(Double.parseDouble(recharge));
-            customerService.save(customerOptional.get());
+            if(customerOptional.get().getMoney() == null){
+                customerOptional.get().setMoney(Double.parseDouble(recharge));
+                customerService.save(customerOptional.get());
+            }else {
+                Double newMoney = customerOptional.get().getMoney() + Double.parseDouble(recharge);
+                customerOptional.get().setMoney(newMoney);
+                customerService.save(customerOptional.get());
+            }
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
