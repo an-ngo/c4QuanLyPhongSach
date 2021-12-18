@@ -38,4 +38,9 @@ public class RoomService implements IRoomService{
     public List<Room> findAllByCustomer(Customer customer) {
         return roomRepository.findAllByCustomer(customer);
     }
+
+    @Override
+    public Iterable<Room> findAllByCustomerId(Long id) {
+        return roomRepository.findAllByCustomerId(id);
+    }
 }

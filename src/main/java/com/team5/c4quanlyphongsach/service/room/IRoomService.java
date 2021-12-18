@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface IRoomService extends IGeneralService<Room> {
     List<Room> findAllByCustomer(Customer customer);
-
+    Iterable<Room> findAllByCustomerId(Long id);
 }
