@@ -93,7 +93,7 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         bookService.remove(id);
-        return new ResponseEntity<>(bookOptional.get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(bookOptional.get(), HttpStatus.OK);
     }
 
 }
