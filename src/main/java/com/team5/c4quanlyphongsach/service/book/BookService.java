@@ -5,6 +5,7 @@ import com.team5.c4quanlyphongsach.repository.book.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,5 +31,15 @@ public class BookService implements IBookService{
     @Override
     public void remove(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Book> findAllByCustomer_Id(Long id) {
+        return bookRepository.findAllByCustomer_Id(id);
+    }
+
+    @Override
+    public List<Book> findAllByLocationBook_Id(Long id) {
+        return bookRepository.findAllByLocationBook_Id(id);
     }
 }

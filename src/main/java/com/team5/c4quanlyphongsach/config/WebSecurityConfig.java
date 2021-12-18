@@ -50,15 +50,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
+                .cors()
+                .and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .antMatchers("/customers/signup").permitAll()
+//                .antMatchers("/customers/**").permitAll()
                 // all other requests need to be authenticated
-                .anyRequest().authenticated().and().
+//                .anyRequest().authenticated().and().
+                .anyRequest().permitAll().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
@@ -67,10 +72,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-//@Override
-//protected void configure(HttpSecurity httpSecurity) throws Exception {
-//    httpSecurity.csrf().disable()
-//            .authorizeRequests().anyRequest().permitAll();
+
+
+//        @Override
+//        protected void configure(HttpSecurity httpSecurity) throws Exception {
+//            httpSecurity.csrf().disable()
+//                    .authorizeRequests().anyRequest().permitAll();
 //
-//}
+//        }
+
+
 }

@@ -17,7 +17,7 @@ import com.team5.c4quanlyphongsach.model.security.JwtRequest;
 import com.team5.c4quanlyphongsach.model.security.JwtResponse;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 public class JwtAuthenticationController {
 
     @Autowired

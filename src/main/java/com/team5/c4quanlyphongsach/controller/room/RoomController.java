@@ -100,4 +100,9 @@ public class RoomController {
         return new ResponseEntity<>(roomOptional.get(), HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/findAllByUserId/{id}")
+    public ResponseEntity<Iterable<Room>> findAllByUserId(@PathVariable Long id) {
+        List<Room> rooms = (List<Room>) roomService.findAllByCustomerId(id);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
 }

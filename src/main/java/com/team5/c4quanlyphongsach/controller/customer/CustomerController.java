@@ -1,10 +1,9 @@
 package com.team5.c4quanlyphongsach.controller.customer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.c4quanlyphongsach.model.Customer;
-import com.team5.c4quanlyphongsach.model.Room;
+import com.team5.c4quanlyphongsach.model.users.Roles;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.publisher.IPublisherService;
@@ -14,23 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-
 import org.springframework.web.multipart.MultipartFile;
-
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.multipart.MultipartFile;
-
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,6 +70,7 @@ public class CustomerController {
     public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer){
         Optional<Customer> customer2 = customerService.findByEmail(customer.getEmail());
         if(!customer2.isPresent()) {
+            customer.setRoles(new Roles(Long.parseLong("1")));
             customerService.save(customer);
             return new ResponseEntity<>(customer, HttpStatus.CREATED);
         }
@@ -114,6 +108,7 @@ public class CustomerController {
                 Customer customer1 = new ObjectMapper().readValue(customer,Customer.class);
                 customer1.setId(customerOptional.get().getId());
                 customer1.setAvatar(file1);
+                customer1.setRoles(new Roles(Long.parseLong("1")));
                 customerService.save(customer1);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -123,6 +118,25 @@ public class CustomerController {
                 FileCopyUtils.copy(multipartFile.getBytes(),new File(fileUpLoad + file1));
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+
+    @PutMapping("/recharge/{id}/{recharge}")
+    public ResponseEntity<Customer>recharge(@PathVariable long id, @PathVariable String recharge){
+        Optional<Customer> customerOptional = customerService.findById(id);
+        if (!customerOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            if(customerOptional.get().getMoney() == null){
+                customerOptional.get().setMoney(Double.parseDouble(recharge));
+                customerService.save(customerOptional.get());
+            }else {
+                Double newMoney = customerOptional.get().getMoney() + Double.parseDouble(recharge);
+                customerOptional.get().setMoney(newMoney);
+                customerService.save(customerOptional.get());
             }
             return new ResponseEntity<>(HttpStatus.OK);
         }

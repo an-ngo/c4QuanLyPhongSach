@@ -12,8 +12,8 @@ import javax.persistence.Id;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-//@RequiredArgsConstructor
+//@NoArgsConstructor
+@RequiredArgsConstructor
 @Builder
 public class Roles implements GrantedAuthority{
     @Id
@@ -22,7 +22,13 @@ public class Roles implements GrantedAuthority{
 
     private String name;
 
+    public Roles(Long id) {
+        this.id = id;
+    }
 
+    public Roles(String name) {
+        this.name = name;
+    }
 
     @Override
     public String getAuthority() {
