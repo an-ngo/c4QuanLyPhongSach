@@ -37,6 +37,14 @@ public class LocationBookController {
     @Autowired
     private ITypeService typeService;
 
+
+    @GetMapping("/room/{id}")
+    public ResponseEntity<List<LocationBook>> showAllBookshelfByRoomId(@PathVariable Long id){
+        List<LocationBook> locationBooks = locationBookService.findAllByRoom_Id(id);
+        return new ResponseEntity<>(locationBooks,HttpStatus.OK);
+    }
+
+
     @GetMapping
     public ResponseEntity<List<LocationBook>> showAll(){
         List<LocationBook> locationBooks = (List<LocationBook>) locationBookService.findAll();

@@ -67,7 +67,7 @@ public class BookController {
         if (!customer.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            List<Book> books = bookService.findAllByCustomer_Id(id);
+            List<Book> books = bookService.findAllByLocationBookNullAndCustomer_Id(id);
             return new ResponseEntity<>(books, HttpStatus.OK);
         }
     }
