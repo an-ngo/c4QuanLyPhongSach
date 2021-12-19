@@ -10,6 +10,7 @@ public interface IBookService extends IGeneralService<Book> {
     List<Book> findAllByLocationBook_Id(Long id);
     List<Book> findAllByLocationBook_IdAndCustomer_Id(Long locationBookId,Long customerId);
     List<Book> findAllByLocationBookNullAndCustomer_Id(Long id);
+    void putBookIntoBookshelf(Long locationBookId,Long bookId,Long customerId);
 
 
 

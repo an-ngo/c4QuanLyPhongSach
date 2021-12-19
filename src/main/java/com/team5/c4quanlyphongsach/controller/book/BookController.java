@@ -61,6 +61,12 @@ public class BookController {
         }
     }
 
+    @PutMapping("/{customerId}/{locationBookId}/{bookId}")
+    public ResponseEntity<Book> putBookIntoBookshelf(@PathVariable("customerId") Long customerId,@PathVariable("locationBookId")Long locationBookId,@PathVariable("bookId")Long bookId){
+       bookService.putBookIntoBookshelf(locationBookId,bookId,customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<Book>> findAllBookByCustomerId(@PathVariable Long id) {
         Optional<Customer> customer = customerService.findById(id);

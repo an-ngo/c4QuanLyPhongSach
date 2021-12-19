@@ -1,7 +1,6 @@
 package com.team5.c4quanlyphongsach.controller.locationBook;
 
 import com.team5.c4quanlyphongsach.model.LocationBook;
-import com.team5.c4quanlyphongsach.model.Room;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.publisher.IPublisherService;
@@ -56,6 +55,17 @@ public class LocationBookController {
             return new ResponseEntity<>(locationBooks,HttpStatus.OK);
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<LocationBook> findById(@PathVariable Long id){
+        Optional<LocationBook> locationBookOptional = locationBookService.findById(id);
+        if (!locationBookOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(locationBookOptional.get(),HttpStatus.OK);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<LocationBook> save(@RequestBody LocationBook locationBook){
         return new ResponseEntity<>(locationBookService.save(locationBook),HttpStatus.CREATED);

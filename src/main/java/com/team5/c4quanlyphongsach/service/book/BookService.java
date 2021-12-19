@@ -52,4 +52,9 @@ public class BookService implements IBookService{
     public List<Book> findAllByLocationBookNullAndCustomer_Id(Long id) {
         return bookRepository.findAllByLocationBookNullAndCustomer_Id(id);
     }
+
+    @Override
+    public void putBookIntoBookshelf(Long locationBookId, Long bookId, Long customerId) {
+        bookRepository.putBookIntoBookshelf(locationBookId,bookId,customerId);
+    }
 }
