@@ -24,6 +24,8 @@ public class LocationBook {
 
     private Long current;
 
+    private String image;
+
     @OneToMany()
     @JsonBackReference
     private List<Book> bookList;

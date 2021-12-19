@@ -83,6 +83,11 @@ public class BookController {
         }
     }
 
+    @GetMapping("/{locationBookId}/{customerId}")
+    public ResponseEntity<List<Book>> findAllBookByLocationBookIdAndCustomerId(@PathVariable("locationBookId") Long locationBookId,@PathVariable("customerId") Long customerId) {
+     return new ResponseEntity<>(bookService.findAllByLocationBook_IdAndCustomer_Id(locationBookId,customerId),HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Book> saveRoom(@RequestPart("file") MultipartFile file,@RequestPart ("newBook") String book) {
             MultipartFile multipartFile = file;
