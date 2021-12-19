@@ -8,5 +8,7 @@ import java.util.List;
 public interface IBookService extends IGeneralService<Book> {
     List<Book> findAllByCustomer_Id(Long id);
     List<Book> findAllByLocationBook_Id(Long id);
+    List<Book> findAllByLocationBook_IdAndCustomer_Id(Long locationBookId,Long customerId);
+
 
 }
