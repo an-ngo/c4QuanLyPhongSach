@@ -1,6 +1,7 @@
 package com.team5.c4quanlyphongsach.controller.locationBook;
 
 import com.team5.c4quanlyphongsach.model.LocationBook;
+import com.team5.c4quanlyphongsach.model.Room;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
 import com.team5.c4quanlyphongsach.service.publisher.IPublisherService;
@@ -73,4 +74,10 @@ public class LocationBookController {
             return new ResponseEntity<>(locationBookOptional.get(),HttpStatus.OK);
         }
     }
+
+//    @GetMapping("findAllBookShelf/{id}")
+//    public List<LocationBook> findAllBookShelf(@PathVariable Long id){
+//        Optional<Room> room = roomService.findById(id);
+//
+//    }
 }

@@ -97,8 +97,9 @@ public class RoomController {
             customerOptional.get().setMoney(customerOptional.get().getMoney() - room.getPrice());
             customerService.save(customerOptional.get());
             roomService.save(room);
-        }
         return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
