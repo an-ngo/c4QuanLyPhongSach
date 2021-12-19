@@ -89,13 +89,13 @@ public class RoomController {
                     check = false;
                     break;
                 }
-            }
+            } 
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if(check) {
-           customerOptional.get().setMoney(customerOptional.get().getMoney() - room.getPrice());
-           customerService.save(customerOptional.get());
+            customerOptional.get().setMoney(customerOptional.get().getMoney() - room.getPrice());
+            customerService.save(customerOptional.get());
             roomService.save(room);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
