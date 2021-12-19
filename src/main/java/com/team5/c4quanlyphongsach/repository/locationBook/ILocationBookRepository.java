@@ -11,4 +11,5 @@ import java.util.List;
 public interface ILocationBookRepository extends JpaRepository<LocationBook,Long> {
     List<LocationBook> findAllByRoom_Id(Long id);
 
+    
 }
