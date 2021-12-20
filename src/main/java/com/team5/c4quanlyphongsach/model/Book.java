@@ -29,8 +29,6 @@ public class Book {
 
     private String image;
 
-    private Long rate;
-
     @ManyToOne(targetEntity = Publisher.class)
     private Publisher publisher;
 
