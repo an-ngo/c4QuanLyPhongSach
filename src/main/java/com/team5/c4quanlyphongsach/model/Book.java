@@ -43,5 +43,5 @@ public class Book {
     private Customer customer;
 
 
-
+    private Long rate;
 }
