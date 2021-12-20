@@ -64,4 +64,14 @@ public class BookService implements IBookService{
     }
 
 
+
+
+
+
+
+
+    @Override
+    public void updateBookRate(Float rate, Long idBook) {
+        bookRepository.updateBookRate(rate,idBook);
+    }
 }

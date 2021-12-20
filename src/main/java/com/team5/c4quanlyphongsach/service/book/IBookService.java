@@ -14,6 +14,6 @@ public interface IBookService extends IGeneralService<Book> {
     void returnBookComeToCart(Long locationBookId,Long bookId,Long customerId);
 
 
-
+    void updateBookRate(Float rate, Long idBook);
 
 }

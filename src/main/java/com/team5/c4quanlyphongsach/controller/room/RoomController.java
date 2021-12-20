@@ -1,6 +1,7 @@
 package com.team5.c4quanlyphongsach.controller.room;
 
 
+import com.team5.c4quanlyphongsach.model.Book;
 import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.LocationBook;
 import com.team5.c4quanlyphongsach.model.Room;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -95,8 +98,58 @@ public class RoomController {
         }
         if(check) {
             customerOptional.get().setMoney(customerOptional.get().getMoney() - room.getPrice());
+            room.setCustomer(customerOptional.get());
             customerService.save(customerOptional.get());
-            roomService.save(room);
+            Room room1 = roomService.save(room);
+//            fix cung ke
+            if (room.getName().equals("Modern Room")){
+                LocationBook modernBookshelf = new LocationBook("Modern Bookshelf",10L,0L,"modernBookshelf.jpg",room1);
+                LocationBook indiaBookshelf = new LocationBook("India Bookshelf",10L,0L,"indiaBookshelf.jpg",room1);
+                LocationBook italiaBookshelf = new LocationBook("Italia Bookshelf",10L,0L,"italiaBookshelf.jpg",room1);
+                locationBookService.save(modernBookshelf);
+                locationBookService.save(indiaBookshelf);
+                locationBookService.save(italiaBookshelf);
+            }
+            else if (room.getName().equals("Working Room")){
+                LocationBook simpleBookshelf = new LocationBook("Simple Bookshelf",5L,0L,"simpleBookshelf.jpg",room1);
+                locationBookService.save(simpleBookshelf);
+
+            }
+            else if (room.getName().equals("Classic Room")){
+                List<Book> books = new ArrayList<>();
+                LocationBook classicBookshelf = new LocationBook("Classic Bookshelf","",5L,0L,"classicBookshelf.jpg",books,room1);
+                LocationBook simpleBookshelf = new LocationBook("Simple Bookshelf","",5L,0L,"simpleBookshelf.jpg",books,room1);
+                locationBookService.save(classicBookshelf);
+                locationBookService.save(simpleBookshelf);
+            }
+            else if (room.getName().equals("Noble Room")){
+                LocationBook modernBookshelf = new LocationBook("Modern Bookshelf",10L,0L,"modernBookshelf.jpg",room1);
+                LocationBook indiaBookshelf = new LocationBook("India Bookshelf",10L,0L,"indiaBookshelf.jpg",room1);
+                LocationBook italiaBookshelf = new LocationBook("Italia Bookshelf",10L,0L,"italiaBookshelf.jpg",room1);
+                LocationBook royalBookshelf = new LocationBook("Royal Bookshelf",20L,0L,"royalBookshelf.jpg",room1);
+                LocationBook classicBookshelf = new LocationBook("Classic Bookshelf",5L,0L,"classicBookshelf.jpg",room1);
+                LocationBook simpleBookshelf = new LocationBook("Simple Bookshelf",5L,0L,"simpleBookshelf.jpg",room1);
+                locationBookService.save(modernBookshelf);
+                locationBookService.save(indiaBookshelf);
+                locationBookService.save(italiaBookshelf);
+                locationBookService.save(royalBookshelf);
+                locationBookService.save(classicBookshelf);
+                locationBookService.save(simpleBookshelf);
+
+            }
+            else if (room.getName().equals("Vintage Room")){
+                LocationBook modernBookshelf = new LocationBook("Modern Bookshelf",10L,0L,"modernBookshelf.jpg",room1);
+                LocationBook classicBookshelf = new LocationBook("Classic Bookshelf",5L,0L,"classicBookshelf.jpg",room1);
+                LocationBook simpleBookshelf = new LocationBook("Simple Bookshelf",5L,0L,"simpleBookshelf.jpg",room1);
+                locationBookService.save(modernBookshelf);
+                locationBookService.save(classicBookshelf);
+                locationBookService.save(simpleBookshelf);
+
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
         return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

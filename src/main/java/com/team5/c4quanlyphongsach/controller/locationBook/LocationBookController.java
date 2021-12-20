@@ -98,4 +98,16 @@ public class LocationBookController {
 //        Optional<Room> room = roomService.findById(id);
 //
 //    }
+
+    @GetMapping("/room/getavg/{id}")
+    public ResponseEntity<Float> getStarAvg(@PathVariable Long id){
+        LocationBook locationBook = locationBookService.findById(id).get();
+        float sum=0;
+        for(int i=0;i<locationBook.getBookList().size();i++){
+            sum+=locationBook.getBookList().get(i).getRate();
+        }
+        float avg = sum/locationBook.getBookList().size();
+        avg = (float) ((avg%0.5)*0.5);
+        return new ResponseEntity<>(avg,HttpStatus.OK);
+    }
 }
