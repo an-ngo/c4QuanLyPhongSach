@@ -172,4 +172,24 @@ public class BookController {
         bookService.updateBookRate(rate,id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+
+    @GetMapping("/room/getavg/{id}")
+    public ResponseEntity<Float> getStarAvg(@PathVariable Long id){
+         List<Book> bookList = bookService.findAllByLocationBook_Id(id);
+        float sum=0;
+        float avg=0;
+        for(int i=0;i<bookList.size();i++){
+            sum+=bookList.get(i).getRate();
+        }
+        if(bookList.size()==0){
+            avg =0;
+        }
+        else{
+            avg = sum/bookList.size();
+        }
+        avg = (float) (Math.floor(avg/0.5)*0.5);
+        return new ResponseEntity<>(avg,HttpStatus.OK);
+    }
 }

@@ -38,4 +38,5 @@ public interface IBookRepository extends JpaRepository<Book,Long> {
     @Transactional
     @Query(value = "update Book b set b.rate=?1 where b.id=?2")
     void updateBookRate(Float rate, Long id);
+
 }
