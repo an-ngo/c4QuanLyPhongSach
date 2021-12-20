@@ -38,4 +38,11 @@ public class LocationBookService implements ILocationBookService {
     public List<LocationBook> findAllByRoom_Id(Long id) {
         return locationBookRepository.findAllByRoom_Id(id);
     }
+
+    @Override
+    public void updateCurrentOfBookshelf(Long current, Long id) {
+        locationBookRepository.updateCurrentOfBookshelf(current,id);
+    }
+
+
 }

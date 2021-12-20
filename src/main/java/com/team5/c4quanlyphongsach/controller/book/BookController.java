@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.c4quanlyphongsach.model.Book;
 import com.team5.c4quanlyphongsach.model.Customer;
 import com.team5.c4quanlyphongsach.model.LocationBook;
-import com.team5.c4quanlyphongsach.model.users.Roles;
 import com.team5.c4quanlyphongsach.service.book.IBookService;
 import com.team5.c4quanlyphongsach.service.customer.ICustomerService;
 import com.team5.c4quanlyphongsach.service.locationBook.ILocationBookService;
@@ -63,8 +62,28 @@ public class BookController {
 
     @PutMapping("/{customerId}/{locationBookId}/{bookId}")
     public ResponseEntity<Book> putBookIntoBookshelf(@PathVariable("customerId") Long customerId,@PathVariable("locationBookId")Long locationBookId,@PathVariable("bookId")Long bookId){
-       bookService.putBookIntoBookshelf(locationBookId,bookId,customerId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Optional<LocationBook> locationBookOptional = locationBookService.findById(locationBookId);
+        LocationBook locationBook = locationBookOptional.get();
+        if (locationBook.getCurrent() == locationBook.getCapacity()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            Long newCurrent = locationBook.getCurrent() + 1;
+            locationBookService.updateCurrentOfBookshelf(newCurrent,locationBookId);
+            bookService.putBookIntoBookshelf(locationBookId,bookId,customerId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+    }
+
+    @DeleteMapping("/{customerId}/{locationBookId}/{bookId}")
+    public ResponseEntity<Book> returnBookComeToCart(@PathVariable("customerId") Long customerId,@PathVariable("locationBookId")Long locationBookId,@PathVariable("bookId")Long bookId){
+        Optional<LocationBook> locationBookOptional = locationBookService.findById(locationBookId);
+        LocationBook locationBook = locationBookOptional.get();
+            Long newCurrent = locationBook.getCurrent() - 1;
+            locationBookService.updateCurrentOfBookshelf(newCurrent,locationBookId);
+            bookService.returnBookComeToCart(locationBookId,bookId,customerId);
+            return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     @GetMapping("/customer/{id}")
@@ -93,6 +112,8 @@ public class BookController {
     public ResponseEntity<List<Book>> findAllBookByLocationBookIdAndCustomerId(@PathVariable("locationBookId") Long locationBookId,@PathVariable("customerId") Long customerId) {
      return new ResponseEntity<>(bookService.findAllByLocationBook_IdAndCustomer_Id(locationBookId,customerId),HttpStatus.OK);
     }
+
+
 
     @PostMapping
     public ResponseEntity<Book> saveRoom(@RequestPart("file") MultipartFile file,@RequestPart ("newBook") String book) {

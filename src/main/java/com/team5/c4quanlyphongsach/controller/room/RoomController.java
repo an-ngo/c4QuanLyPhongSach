@@ -120,7 +120,7 @@ public class RoomController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         roomService.remove(id);
-        return new ResponseEntity<>(roomOptional.get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(roomOptional.get(), HttpStatus.OK);
     }
 
     @GetMapping("/findAllByUserId/{id}")

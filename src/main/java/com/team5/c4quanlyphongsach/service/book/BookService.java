@@ -57,4 +57,11 @@ public class BookService implements IBookService{
     public void putBookIntoBookshelf(Long locationBookId, Long bookId, Long customerId) {
         bookRepository.putBookIntoBookshelf(locationBookId,bookId,customerId);
     }
+
+    @Override
+    public void returnBookComeToCart(Long locationBookId, Long bookId, Long customerId) {
+        bookRepository.returnBookComeToCart(locationBookId,bookId,customerId);
+    }
+
+
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ILocationBookService extends IGeneralService<LocationBook> {
     List<LocationBook> findAllByRoom_Id(Long id);
+    void updateCurrentOfBookshelf(Long current,Long id);
+
 }
