@@ -27,7 +27,7 @@ public class Customer {
     @Column(unique = true)
     private String email;
 
-    @Pattern(regexp = "^[0-9a-zA-z]{8}$", message = "Mat khau khong hop le")
+    @Pattern(regexp = "^[0-9a-zA-z]{8,20}$", message = "Mat khau khong hop le")
 //    @Size(max = 18, min = 8,message = "Do dai mat khau khong hop le")
     private String password;
 

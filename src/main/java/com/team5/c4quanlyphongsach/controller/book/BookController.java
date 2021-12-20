@@ -122,6 +122,7 @@ public class BookController {
             try {
                 Book book1 = new ObjectMapper().readValue(book,Book.class);
                 book1.setImage(file1);
+                book1.setRate(0L);
                 bookService.save(book1);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
