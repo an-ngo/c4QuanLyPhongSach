@@ -26,10 +26,30 @@ public class LocationBook {
 
     private String image;
 
+
+
     @OneToMany()
     @JsonBackReference
     private List<Book> bookList;
 
     @ManyToOne(targetEntity = Room.class)
     private Room room;
+
+    public LocationBook(String name, String description, Long capacity, Long current, String image, List<Book> bookList, Room room) {
+        this.name = name;
+        this.description = description;
+        this.capacity = capacity;
+        this.current = current;
+        this.image = image;
+        this.bookList = bookList;
+        this.room = room;
+    }
+
+    public LocationBook(String name, Long capacity, Long current, String image, Room room) {
+        this.name = name;
+        this.capacity = capacity;
+        this.current = current;
+        this.image = image;
+        this.room = room;
+    }
 }
