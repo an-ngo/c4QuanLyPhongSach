@@ -26,4 +26,16 @@ public interface IBookRepository extends JpaRepository<Book,Long> {
     @Transactional
     @Query(value = "update Book b set b.locationBook.id = null where b.locationBook.id=?1 and b.id = ?2 and b.customer.id = ?3")
     void returnBookComeToCart(Long locationBookId,Long bookId,Long customerId);
+
+
+
+
+
+
+
+
+    @Modifying
+    @Transactional
+    @Query(value = "update Book b set b.rate=?1 where b.id=?2")
+    void updateBookRate(Float rate, Long id);
 }

@@ -42,5 +42,5 @@ public class Book {
     @ManyToOne
     private Customer customer;
 
-    private Long rate;
+    private Float rate;
 }

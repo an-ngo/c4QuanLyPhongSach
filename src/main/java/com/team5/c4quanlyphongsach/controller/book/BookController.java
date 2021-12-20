@@ -156,4 +156,19 @@ public class BookController {
         return new ResponseEntity<>(bookOptional.get(), HttpStatus.OK);
     }
 
+
+
+
+
+
+
+
+
+
+
+    @PutMapping("/rates/{id}")
+    public ResponseEntity<?> updateBookRate(@PathVariable Long id, @RequestBody Float rate){
+        bookService.updateBookRate(rate,id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
